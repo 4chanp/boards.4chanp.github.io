@@ -1,15 +1,88 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<style type="text/css">
+			html {
+				background: #777;
+				color: #ededed;
+			}
+
+			#viewer {
+				 background-size: contain;
+				 background-position: 50% 50%;
+				 background-repeat: no-repeat;
+			}
+			/*background-image: url(http://imgur.com/ikG9Iau.jpg); background-size: contain; background-position: 50% 50%; background-repeat: no-repeat; */
+		</style>
 	</head>
 	<body>
+
+		<div id="prevButton">&lt;</div>
+		<div id="NextButton">&gt;</div>
+
+		<div id="viewer"></div>
+
 		<script type="text/javascript">
 			(function(global){
+				var NOOP = function(){};
 				var path = document.location.pathname;
-				global.parseThread = console.log;
-				var threadJsonp document.createElement('script');
-				threadJsonp.src = "http://json2jsonp.com/?url=http://a.4cdn.org" + path + ".json&callback=parseThread"
+				var board = path.split('/')[1];
+				var threadJsonp = document.createElement('script');
+				threadJsonp.src = 'http://json2jsonp.com/?url=http://a.4cdn.org' + path + '.json&callback=parseThread';
+				document.head.appendChild(threadJsonp);
 				//http://json2jsonp.com/?url=http://a.4cdn.org/d/thread/6561871.json&callback=parseThread
+				
+				global.parseThread = function parseThread(resp){
+					var goodExtensions = ['.jpg', '.jpeg', '.gif', '.bmp', '.png', '.webm'];
+					var images = resp.posts.filter(function(post){
+						return goodExtensions.indexOf(post.ext) > -1;
+					});
+					images.forEach(function(post){
+						//http(s)://i.4cdn.org/board/tim.ext
+						post.imgURL = 'http://i.4cdn.org/' + board + '/' + post.tim + '' + post.ext;
+						console.log(post.imgURL;
+						preloadImg(post.imgURL);
+					});
+					showImg();
+				};
+
+				var position = 0;
+
+				function nextImg () {
+					position += 1;
+					showImg();
+				}
+
+				function prevImg () {
+					position -= 1;
+					showImg();
+				}
+
+				function showImg() {
+					var viewer = document.getElementById('viewer');
+					viewer..style.backgroundImage = "url('" + images[position].imgURL + "');";
+				}
+
+				///Preload
+				var preloadBuffer = [];
+				var preloadRuning = false;
+				function preloadImg (href) {
+					preloadBuffer.push(href);
+					if (!preloadRuning) {
+						loadNextImg();
+					}
+					function loadNextImg() {
+						preloadRuning = true;
+						if (preloadBuffer.length === 0) {
+							preloadRuning = false;
+							return;
+						}
+						var i = new Image();
+						i.onload = loadNextImg;
+						i.src = preloadBuffer.shift();
+						console.log('load: ' + i.src);
+					}
+				}
 
 			}(this));
 		</script>
