@@ -96,6 +96,7 @@
 							//preloadImg(post.imgURL);
 						});
 						showImg();
+						tickAuto();
 					};
 
 					var position = 0;
@@ -129,13 +130,15 @@
 							nextImg();
 						}
 					});
-					tickAuto ();
+					//tickAuto();
 					var autoTimeout;
 					function tickAuto () {
-						if ( $('#autoCb').prop( "checked" )) {
-							nextImg();
-						}
-						autoTimeout = setTimeout(tickAuto, $('#autoSec').val() * 1000);
+						autoTimeout = setTimeout(function(){
+							if ( $('#autoCb').prop( "checked" )) {
+								nextImg();
+							}
+							tickAuto();
+						}, $('#autoSec').val() * 1000);
 					}
 					$('#autoCb').click(function () {
 						 clearTimeout(autoTimeout);
