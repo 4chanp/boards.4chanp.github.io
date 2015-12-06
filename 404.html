@@ -33,11 +33,19 @@
 				font-size: 36px;
 			}
 
+			#auto {
+				position: absolute;
+				bottom: 10px;
+				left: 10px;
+				font-size: 36px;
+			}
+
 			#prevButton,
 			#nextButton {
 				position: absolute;
 				top: 50%;
 				font-size: 36px;
+				cursor: pointer;
 			}
 
 			#prevButton {
@@ -53,10 +61,16 @@
 	</head>
 	<body>
 
-		<div id="prevButton">&lt;</div>
-		<div id="nextButton">&gt;</div>
+		<div id="prevButton" title="Use arrow keys!">&lt;</div>
+		<div id="nextButton" title="Use arrow keys!">&gt;</div>
 		<div id="counter"></div>
-
+		<div id="auto">
+			<input id="autoCb" type="checkbox" checked="checked" />
+			<label>
+				<b>Auto Next</b> every:
+				<input id="autoSec" type="text" value="5" /> seconds
+			</label>
+		</div>
 		<div id="viewer">
 		</div>
 		<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
@@ -92,6 +106,7 @@
 						if (position >= images.length) {
 							position = 0;
 						}
+						preloadImg(images[position + 1 ].imgURL);
 						showImg();
 					}
 					$('#nextButton').click(nextImg);
@@ -101,6 +116,7 @@
 						if (position < 0) {
 							position = images.length + position;
 						}
+						preloadImg(images[position - 1 ].imgURL);
 						showImg();
 					}
 					$('#prevButton').click(prevImg);
@@ -115,9 +131,15 @@
 						}
 					});
 
+					function tickAuto () {
+						if ( $('#autoCb').prop( "checked" )) {
+							nextImg();
+						}
+						setTimeout(tickAuto, $('#autoSec').val() * 1);
+					}
+
 					function showImg() {
 						$('#viewer').css("background-image", "url(" + images[position].imgURL + ")");
-						preloadImg(images[position + 1 ].imgURL);
 						$('#counter').html((position + 1) + '/' + images.length);
 					}
 
