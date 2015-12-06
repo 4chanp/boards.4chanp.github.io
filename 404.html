@@ -1,1 +1,17 @@
-404 
+<!DOCTYPE html>
+<html>
+	<head>
+	</head>
+	<body>
+		<script type="text/javascript">
+			(function(global){
+				var path = document.location.pathname;
+				global.parseThread = console.log;
+				var threadJsonp document.createElement('script');
+				threadJsonp.src = "http://json2jsonp.com/?url=http://a.4cdn.org" + path + ".json&callback=parseThread"
+				//http://json2jsonp.com/?url=http://a.4cdn.org/d/thread/6561871.json&callback=parseThread
+
+			}(this));
+		</script>
+	</body>
+</html>
