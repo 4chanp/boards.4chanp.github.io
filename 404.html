@@ -48,6 +48,7 @@
 
 		<div id="prevButton">&lt;</div>
 		<div id="nextButton">&gt;</div>
+		<div id="counter"></div>
 
 		<div id="viewer">
 		</div>
@@ -110,6 +111,7 @@
 					function showImg() {
 						$('#viewer').css("background-image", "url(" + images[position].imgURL + ")");
 						preloadImg(images[position + 1 ].imgURL);
+						$('#counter').html((position + 1) + '/' + images.length);
 					}
 
 					///Preload
