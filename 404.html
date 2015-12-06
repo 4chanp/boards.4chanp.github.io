@@ -26,6 +26,13 @@
 				 background-repeat: no-repeat;
 			}
 
+
+			#videoViewer {
+				max-height: 100%;
+				max-width: 100%;
+				margin: 0 autol
+			}
+
 			#counter {
 				position: absolute;
 				top: 10px;
@@ -71,6 +78,7 @@
 			</label>
 		</div>
 		<div id="viewer">
+			<video id="videoViewer" autoplay="autoplay" loop="loop"></video>
 		</div>
 		<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 		<script type="text/javascript">
@@ -161,7 +169,15 @@
 					});
 
 					function showImg() {
-						$('#viewer').css("background-image", "url(" + images[position].imgURL + ")");
+						//todo video array
+						if (images[position].ext = 'webm') {
+							$('#viewer').css("background-image", "url()");
+							$('#videoViewer').show().attr('src', images[position].imgURL);
+
+						} else {
+							$('#videoViewer').hide();
+							$('#viewer').css("background-image", "url(" + images[position].imgURL + ")");
+						}
 						$('#counter').html((position + 1) + '/' + images.length);
 					}
 
