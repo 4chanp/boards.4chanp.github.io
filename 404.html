@@ -9,6 +9,8 @@
 			}
 
 			#viewer {
+				height: 100%;
+				width: 100%;
 				 background-size: contain;
 				 background-position: 50% 50%;
 				 background-repeat: no-repeat;
@@ -38,7 +40,6 @@
 		<div id="nextButton">&gt;</div>
 
 		<div id="viewer">
-			<img id="imgViewer" src="" />
 		</div>
 		<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 		<script type="text/javascript">
@@ -72,20 +73,16 @@
 						position += 1;
 						showImg();
 					}
-					document.getElementById('nextButton').addEventListener('click', nextImg);
+					$('#nextButton').click(nextImg);
 
 					function prevImg () {
 						position -= 1;
 						showImg();
 					}
-					document.getElementById('prevButton').addEventListener('click', prevImg);
+					$('#prevButton').click(prevImg);
 
 					function showImg() {
-						console.log('QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ' + images[position].imgURL);
-						var viewer = document.getElementById('viewer');
-						viewer.style.backgroundImage = "url('" + images[position].imgURL + "');";
-						var imgViewer = document.getElementById('imgViewer');
-						imgViewer.src = images[position].imgURL;
+						$('#viewer').css("background-image", "url(" + images[position].imgURL + ")");  
 					}
 
 					///Preload
