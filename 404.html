@@ -5,15 +5,17 @@
 			html {
 				position: relative;
 				width: 100%;
-				height: 100%
+				height: 100%;
+				margin: 0;
 			}
-			
+
 			body {
 				background: #777;
 				color: #ededed;
 				position: relative;
 				width: 100%;
-				height: 100%
+				height: 100%;
+				margin: 0;
 			}
 
 			#viewer {
@@ -95,7 +97,7 @@
 					}
 					$('#prevButton').click(prevImg);
 
-					$('document').keydown(function (e) {
+					$(document).keydown(function (e) {
 						if (e.keyCode === 37) {
 							prevImg();
 						}
