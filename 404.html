@@ -72,7 +72,7 @@
 							//http(s)://i.4cdn.org/board/tim.ext
 							post.imgURL = 'http://i.4cdn.org/' + board + '/' + post.tim + '' + post.ext;
 							console.log(post.imgURL);
-							preloadImg(post.imgURL);
+							//preloadImg(post.imgURL);
 						});
 						showImg();
 					};
@@ -108,18 +108,21 @@
 					});
 
 					function showImg() {
-						$('#viewer').css("background-image", "url(" + images[position].imgURL + ")");  
+						$('#viewer').css("background-image", "url(" + images[position].imgURL + ")");
+						preloadImg(images[position + 1 ].imgURL);
 					}
 
 					///Preload
 					var preloadBuffer = [];
 					var preloadRuning = false;
+					var loaded = -1;
 					function preloadImg (href) {
 						preloadBuffer.push(href);
 						if (!preloadRuning) {
 							loadNextImg();
 						}
 						function loadNextImg() {
+							loaded += 1;
 							preloadRuning = true;
 							if (preloadBuffer.length === 0) {
 								preloadRuning = false;
