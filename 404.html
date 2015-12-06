@@ -5,6 +5,7 @@
 			html {
 				background: #777;
 				color: #ededed;
+				position: relative;
 			}
 
 			#viewer {
@@ -12,15 +13,30 @@
 				 background-position: 50% 50%;
 				 background-repeat: no-repeat;
 			}
+
+			#prevButton,
+			#nextButton {
+				position: absolute;
+				top: 50%;
+				font-size: 36px;
+				left: 10px;
+			}
+
+			#nextButton {
+				right: 10px;
+			}
+
 			/*background-image: url(http://imgur.com/ikG9Iau.jpg); background-size: contain; background-position: 50% 50%; background-repeat: no-repeat; */
 		</style>
 	</head>
 	<body>
 
 		<div id="prevButton">&lt;</div>
-		<div id="NextButton">&gt;</div>
+		<div id="nextButton">&gt;</div>
 
-		<div id="viewer"></div>
+		<div id="viewer">
+			<img id="imgViewer" src="" />
+		</div>
 
 		<script type="text/javascript">
 			(function(global){
@@ -52,15 +68,20 @@
 					position += 1;
 					showImg();
 				}
+				document.getElementById('nextButton').addEventListener('click', nextImg);
 
 				function prevImg () {
 					position -= 1;
 					showImg();
 				}
+				document.getElementById('prevButton').addEventListener('click', prevImg);
 
 				function showImg() {
+					console.log('QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ' + images[position].imgURL);
 					var viewer = document.getElementById('viewer');
 					viewer.style.backgroundImage = "url('" + images[position].imgURL + "');";
+					var imgViewer = document.getElementById('imgViewer');
+					imgViewer.src = images[position].imgURL;
 				}
 
 				///Preload
