@@ -6,6 +6,8 @@
 				background: #777;
 				color: #ededed;
 				position: relative;
+				width: 100%;
+				height: 100%
 			}
 
 			#viewer {
@@ -71,15 +73,31 @@
 
 					function nextImg () {
 						position += 1;
+						if (position >= images.length) {
+							position = 0;
+						}
 						showImg();
 					}
 					$('#nextButton').click(nextImg);
 
 					function prevImg () {
 						position -= 1;
+						if (position < 0) {
+							position = images.length + position;
+						}
 						showImg();
 					}
 					$('#prevButton').click(prevImg);
+
+					$('document').keyDown(function (e) {
+						if (e.keyCode === 37) {
+							prevImg();
+						}
+
+						if (e.keyCode === 39) {
+							nextImg();
+						}
+					});
 
 					function showImg() {
 						$('#viewer').css("background-image", "url(" + images[position].imgURL + ")");  
