@@ -76,6 +76,7 @@
 		<script type="text/javascript">
 			(function(global){
 				$(function() {
+
 					var NOOP = function(){};
 					var path = document.location.pathname;
 					var board = path.split('/')[1];
@@ -108,6 +109,7 @@
 						}
 						preloadImg(images[position + 1 ].imgURL);
 						showImg();
+						tickAuto();
 					}
 					$('#nextButton').click(nextImg);
 
@@ -118,6 +120,7 @@
 						}
 						preloadImg(images[position - 1 ].imgURL);
 						showImg();
+						tickAuto();
 					}
 					$('#prevButton').click(prevImg);
 
@@ -135,9 +138,16 @@
 							$('#autoCb').click();
 						}
 					});
+
+					$('#autoSec').val(localStorage.getItem("autoSecValue") || 5);
+					$('#autoSec').change(function (e) {
+						localStorage.setItem("autoSecValue", $('#autoSec').val());
+					});
+
 					//tickAuto();
 					var autoTimeout;
 					function tickAuto () {
+						clearTimeout(autoTimeout);
 						autoTimeout = setTimeout(function(){
 							if ( $('#autoCb').prop( "checked" )) {
 								nextImg();
