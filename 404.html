@@ -31,16 +31,16 @@
 				threadJsonp.src = 'http://json2jsonp.com/?url=http://a.4cdn.org' + path + '.json&callback=parseThread';
 				document.head.appendChild(threadJsonp);
 				//http://json2jsonp.com/?url=http://a.4cdn.org/d/thread/6561871.json&callback=parseThread
-				
+				var images = [];
 				global.parseThread = function parseThread(resp){
 					var goodExtensions = ['.jpg', '.jpeg', '.gif', '.bmp', '.png', '.webm'];
-					var images = resp.posts.filter(function(post){
+					images = resp.posts.filter(function(post){
 						return goodExtensions.indexOf(post.ext) > -1;
 					});
 					images.forEach(function(post){
 						//http(s)://i.4cdn.org/board/tim.ext
 						post.imgURL = 'http://i.4cdn.org/' + board + '/' + post.tim + '' + post.ext;
-						console.log(post.imgURL;
+						console.log(post.imgURL);
 						preloadImg(post.imgURL);
 					});
 					showImg();
@@ -60,7 +60,7 @@
 
 				function showImg() {
 					var viewer = document.getElementById('viewer');
-					viewer..style.backgroundImage = "url('" + images[position].imgURL + "');";
+					viewer.style.backgroundImage = "url('" + images[position].imgURL + "');";
 				}
 
 				///Preload
