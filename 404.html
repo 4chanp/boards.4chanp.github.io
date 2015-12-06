@@ -30,7 +30,8 @@
 			#videoViewer {
 				height: 100%;
 				width: 100%;
-				margin: 0 autol
+				margin: 0 auto;
+				z-index: 50;
 			}
 
 			#counter {
@@ -38,12 +39,14 @@
 				top: 10px;
 				left: 10px;
 				font-size: 36px;
+				z-index: 800;
 			}
 
 			#auto {
 				position: absolute;
 				bottom: 10px;
 				left: 10px;
+				z-index: 800;
 			}
 
 			#prevButton,
@@ -52,6 +55,7 @@
 				top: 50%;
 				font-size: 36px;
 				cursor: pointer;
+				z-index: 800;
 			}
 
 			#prevButton {
@@ -170,7 +174,7 @@
 
 					function showImg() {
 						//todo video array
-						if (images[position].ext = 'webm') {
+						if (images[position].ext === '.webm') {
 							$('#viewer').css("background-image", "url()");
 							$('#videoViewer').show().attr('src', images[position].imgURL);
 
