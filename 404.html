@@ -159,7 +159,7 @@
 						}
 					});
 
-					$('#autoCb').prop('checked', localStorage.getItem('autoCb') === null? false: true);
+					$('#autoCb').prop('checked', localStorage.getItem('autoCb') === null? true: localStorage.getItem('autoCb'));
 
 					$('#autoSec').val(localStorage.getItem('autoSecValue') || 5);
 					$('#autoSec').change(function (e) {
