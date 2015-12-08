@@ -79,7 +79,7 @@
 		<div id="nextButton" title="Use arrow keys!">&gt;</div>
 		<div id="counter"></div>
 		<div id="auto">
-			<input id="autoCb" type="checkbox" checked="checked" />
+			<input id="autoCb" type="checkbox" checked="checked" controls="controls" />
 			<label>
 				<b>Auto Next</b> every:
 				<input id="autoSec" type="text" value="5" /> seconds
@@ -159,9 +159,11 @@
 						}
 					});
 
-					$('#autoSec').val(localStorage.getItem("autoSecValue") || 5);
+					$('#autoCb').prop('checked', localStorage.getItem('autoCb') || true));
+
+					$('#autoSec').val(localStorage.getItem('autoSecValue') || 5);
 					$('#autoSec').change(function (e) {
-						localStorage.setItem("autoSecValue", $('#autoSec').val());
+						localStorage.setItem('autoSecValue', $('#autoSec').val());
 					});
 
 					//tickAuto();
@@ -169,26 +171,27 @@
 					function tickAuto () {
 						clearTimeout(autoTimeout);
 						autoTimeout = setTimeout(function(){
-							if ( $('#autoCb').prop( "checked" )) {
+							if ( $('#autoCb').prop( 'checked' )) {
 								nextImg();
 							}
 							tickAuto();
 						}, $('#autoSec').val() * 1000);
 					}
 					$('#autoCb').click(function () {
-						 clearTimeout(autoTimeout);
-						 tickAuto();
+						localStorage.setItem('autoCb', $('#autoCb').prop('checked'));
+						clearTimeout(autoTimeout);
+						tickAuto();
 					});
 
 					function showImg() {
 						//todo video array
 						if (images[position].ext === '.webm') {
-							$('#viewer').css("background-image", "url()");
+							$('#viewer').css('background-image', 'url()');
 							$('#videoViewer').show().attr('src', images[position].imgURL);
 
 						} else {
 							$('#videoViewer').hide();
-							$('#viewer').css("background-image", "url(" + images[position].imgURL + ")");
+							$('#viewer').css('background-image', 'url(' + images[position].imgURL + ')');
 						}
 						$('#counter').html((position + 1) + '/' + images.length);
 					}
