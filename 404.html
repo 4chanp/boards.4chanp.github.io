@@ -95,9 +95,11 @@
 
 					var NOOP = function(){};
 					var path = document.location.pathname;
-					var board = path.split('/')[1];
+					var pathArray = path.split('/');
+					var board = pathArray.shift();
+					var thread = pathArray.shift();
 					var threadJsonp = document.createElement('script');
-					threadJsonp.src = 'http://json2jsonp.com/?url=http://a.4cdn.org' + path + '.json&callback=parseThread';
+					threadJsonp.src = 'http://json2jsonp.com/?url=http://a.4cdn.org/' + [board, thread].join('/') + '.json&callback=parseThread';
 					document.head.appendChild(threadJsonp);
 					//http://json2jsonp.com/?url=http://a.4cdn.org/d/thread/6561871.json&callback=parseThread
 					var images = [];
