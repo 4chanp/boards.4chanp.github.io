@@ -91,6 +91,30 @@
 		<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 		<script type="text/javascript">
 			(function(global){
+				if (!Array.prototype.find) {
+				  Array.prototype.find = function(predicate) {
+				    if (this === null) {
+				      throw new TypeError('Array.prototype.find called on null or undefined');
+				    }
+				    if (typeof predicate !== 'function') {
+				      throw new TypeError('predicate must be a function');
+				    }
+				    var list = Object(this);
+				    var length = list.length >>> 0;
+				    var thisArg = arguments[1];
+				    var value;
+
+				    for (var i = 0; i < length; i++) {
+				      value = list[i];
+				      if (predicate.call(thisArg, value, i, list)) {
+				        return value;
+				      }
+				    }
+				    return undefined;
+				  };
+				}
+
+				
 				$(function() {
 
 					var NOOP = function(){};
@@ -107,6 +131,7 @@
 					var images = [];
 					global.parseThread = function parseThread(resp){
 						var goodExtensions = ['.jpg', '.jpeg', '.gif', '.bmp', '.png', '.webm'];
+
 						images = resp.posts.filter(function(post){
 							return goodExtensions.indexOf(post.ext) > -1;
 						});
@@ -116,41 +141,19 @@
 							console.log(post.imgURL);
 							//preloadImg(post.imgURL);
 						});
-						showImg();
-						tickAuto();
+						document.location.hash = '#' + images[0].no;
+						//showImg();
+						//tickAuto();
 					};
 
-					var position = 0;
-
-					function nextImg () {
-						position += 1;
-						if (position >= images.length) {
-							position = 0;
-						}
-						preloadImg(images[position + 1 ].imgURL);
-						showImg();
-						tickAuto();
-					}
-					$('#nextButton').click(nextImg);
-
-					function prevImg () {
-						position -= 1;
-						if (position < 0) {
-							position = images.length + position;
-						}
-						preloadImg(images[position - 1 ].imgURL);
-						showImg();
-						tickAuto();
-					}
-					$('#prevButton').click(prevImg);
 
 					$(document).keydown(function (e) {
 						if (e.keyCode === 37) {
-							prevImg();
+							$('#prevButton').click()
 						}
 
 						if (e.keyCode === 39) {
-							nextImg();
+							$('#nextButton').click()
 						}
 
 						//space
@@ -159,7 +162,7 @@
 						}
 					});
 
-					$('#autoCb').prop('checked', localStorage.getItem('autoCb') === null? true: localStorage.getItem('autoCb'));
+					$('#autoCb').prop('checked', localStorage.getItem('autoCb') === "false"? false: true);
 
 					$('#autoSec').val(localStorage.getItem('autoSecValue') || 5);
 					$('#autoSec').change(function (e) {
@@ -183,8 +186,27 @@
 						tickAuto();
 					});
 
+					var position = 0;
+					window.addEventListener("hashchange", function(){
+						var hashCode = document.location.hash.substr(1);
+						var post = images.find(function (p) {
+							return (p.no === hashCode);
+						});
+						position = post 
+							? images.indexOf(post)
+							: 0;
+
+						var prevPost = images[position - 1] || images[images.length - 1]
+						var nextPost = images[position + 1] || images[0]
+						
+						$('#prevButton').attr('href', '#' + prevPost.no);
+						$('#nextButton').attr('href', '#' + nextPost.no);
+
+						showImg();
+						tickAuto();
+					});
+
 					function showImg() {
-						//todo video array
 						if (images[position].ext === '.webm') {
 							$('#viewer').css('background-image', 'url()');
 							$('#videoViewer').show().attr('src', images[position].imgURL);
@@ -226,7 +248,7 @@
 		  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
 		  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-		  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+		  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
 		  ga('create', 'UA-71096916-1', 'auto');
 		  ga('send', 'pageview');
