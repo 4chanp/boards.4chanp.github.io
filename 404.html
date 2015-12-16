@@ -144,7 +144,8 @@
 							console.log(post.imgURL);
 							//preloadImg(post.imgURL);
 						});
-						document.location.hash = document.location.hash || '#' + images[0].no;
+						//document.location.hash = document.location.hash || '#' + images[0].no;
+						parseHash();
 					};
 
 
@@ -188,7 +189,9 @@
 					});
 
 					var position = 0;
-					window.addEventListener("hashchange", function() {
+					window.addEventListener("hashchange", parseHash);
+
+					function parseHash() {
 						var hashCode = parseInt(document.location.hash.substr(1));
 						var post = images.find(function (p) {
 							return (p.no === hashCode);
@@ -207,7 +210,7 @@
 
 						showImg();
 						tickAuto();
-					});
+					}
 
 					function showImg() {
 						if (images[position].ext === '.webm') {
