@@ -4,8 +4,12 @@
 	i did this for my self, code is garbage, and full of bugs.
 	i don`t care...
 	bookmarklet: javascript:location.href=location.href.replace('4chan', '4chanp');
+
+	4chanporg AT gmail
+	
 	-->
 	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<style type="text/css">
 			html {
 				position: relative;
@@ -87,6 +91,7 @@
 				<b>Auto Next</b> every:
 				<input id="autoSec" type="text" value="5" /> seconds
 			</label>
+			<button id="ban">BAN image</button>
 		</div>
 		<div id="viewer">
 			<video id="videoViewer" autoplay="autoplay" loop="loop" controls="controls"></video>
@@ -146,9 +151,8 @@
 					var images = [];
 					global.parseThread = function parseThread(resp){
 						var goodExtensions = ['.jpg', '.jpeg', '.gif', '.bmp', '.png', '.webm'];
-
 						images = resp.posts.filter(function(post){
-							return goodExtensions.indexOf(post.ext) > -1;
+							return (goodExtensions.indexOf(post.ext) > -1 && (store.get('bannedImages') || []).indexOf(post.md5) === -1);
 						});
 						images.forEach(function(post){
 							//http(s)://i.4cdn.org/board/tim.ext
@@ -170,6 +174,11 @@
 						//space
 						if (e.keyCode === 32) {
 							$('#autoCb').click();
+						}
+
+						//del
+						if (e.keyCode === 46) {
+							banCurrentImage();
 						}
 					});
 
@@ -203,7 +212,7 @@
 					function parseHash() {
 						var hashCode = parseInt(document.location.hash.substr(1));
 						var post = images.find(function (p) {
-							return (p.no === hashCode);
+							return (p && p.no === hashCode);
 						});
 						position = post 
 							? images.indexOf(post)
@@ -255,6 +264,14 @@
 							console.log('load: ' + i.src);
 						}
 					}
+					$('#ban').click(banCurrentImage);
+					function banCurrentImage() {
+						var bannedImages = store.get('bannedImages') || [];
+						bannedImages.push(images[position].md5);
+						images.splice(position, 1);
+						store.set('bannedImages', bannedImages);
+					}
+
 				});
 			}(window));
 		</script>
