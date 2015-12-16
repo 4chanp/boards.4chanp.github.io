@@ -57,6 +57,8 @@
 			#prevButton,
 			#nextButton {
 				display: block;
+				text-decoration: none;
+				color: #ededed;
 				position: absolute;
 				top: 50%;
 				font-size: 36px;
@@ -199,7 +201,7 @@
 						var nextPost = images[position + 1] || images[0]
 						preloadImg(prevPost.imgURL);
 						preloadImg(nextPost.imgURL);
-						
+
 						$('#prevButton').attr('href', '#' + prevPost.no);
 						$('#nextButton').attr('href', '#' + nextPost.no);
 
