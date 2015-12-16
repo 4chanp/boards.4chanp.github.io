@@ -142,9 +142,7 @@
 							console.log(post.imgURL);
 							//preloadImg(post.imgURL);
 						});
-						document.location.hash = '#' + images[0].no;
-						//showImg();
-						//tickAuto();
+						document.location.hash = document.location.hash || '#' + images[0].no;
 					};
 
 
@@ -188,8 +186,8 @@
 					});
 
 					var position = 0;
-					window.addEventListener("hashchange", function(){
-						var hashCode = document.location.hash.substr(1);
+					window.addEventListener("hashchange", function() {
+						var hashCode = parseInt(document.location.hash.substr(1));
 						var post = images.find(function (p) {
 							return (p.no === hashCode);
 						});
@@ -199,6 +197,8 @@
 
 						var prevPost = images[position - 1] || images[images.length - 1]
 						var nextPost = images[position + 1] || images[0]
+						preloadImg(prevPost.imgURL);
+						preloadImg(nextPost.imgURL);
 						
 						$('#prevButton').attr('href', '#' + prevPost.no);
 						$('#nextButton').attr('href', '#' + nextPost.no);
