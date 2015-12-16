@@ -141,21 +141,18 @@
 						images.forEach(function(post){
 							//http(s)://i.4cdn.org/board/tim.ext
 							post.imgURL = 'http://i.4cdn.org/' + board + '/' + post.tim + '' + post.ext;
-							console.log(post.imgURL);
-							//preloadImg(post.imgURL);
 						});
-						//document.location.hash = document.location.hash || '#' + images[0].no;
 						parseHash();
 					};
 
 
 					$(document).keydown(function (e) {
 						if (e.keyCode === 37) {
-							$('#prevButton').click()
+							document.location.hash = $('#prevButton').attr('href');
 						}
 
 						if (e.keyCode === 39) {
-							$('#nextButton').click()
+							document.location.hash = $('#nextButton').attr('href');
 						}
 
 						//space
@@ -177,7 +174,7 @@
 						clearTimeout(autoTimeout);
 						autoTimeout = setTimeout(function(){
 							if ( $('#autoCb').prop( 'checked' )) {
-								nextImg();
+								document.location.hash = $('#nextButton').attr('href');
 							}
 							tickAuto();
 						}, $('#autoSec').val() * 1000);
