@@ -3,7 +3,7 @@
 	<!--
 	i did this for my self, code is garbage, and full of bugs.
 	i don`t care...
-	bookmarklet: javascript:location.href=location.href.replace('4chan', '4chanp');
+	bookmarklet: javascript:location.href = (location.href.indexOf('4chanp') === -1)? location.href.replace('4chan', '4chanp'): location.href.replace('4chanp', '4chan');
 
 	4chanporg AT gmail
 	
@@ -167,11 +167,11 @@
 						switch (e.keyCode) {
 							case 37: //left
 							case 65: //a
-								document.location.hash = $('#prevButton').attr('href');
+								document.location.hash = 'p' + $('#prevButton').attr('href');
 								break;
 							case 39: //right
 							case 68: //d
-								document.location.hash = $('#nextButton').attr('href');
+								document.location.hash = 'p' + $('#nextButton').attr('href');
 								break;
 							case 32: //space
 								$('#autoCb').click();
@@ -220,7 +220,7 @@
 					window.addEventListener("hashchange", parseHash);
 
 					function parseHash() {
-						var hashCode = parseInt(document.location.hash.substr(1));
+						var hashCode = parseInt(document.location.hash.substr(2));
 						var post = images.find(function (p) {
 							return (p && p.no === hashCode);
 						});
