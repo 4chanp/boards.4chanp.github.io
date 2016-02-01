@@ -269,18 +269,17 @@
 								return;
 							}
 							var i;
-							i.onprogress = function (e) {
-								console.log([e.loaded, e.total]);
-							};
 							if (images[position].ext === '.webm') {
 								i = document.createElement('video');
 								i.canplaythrough = i.onerror = loadNextImg;
-								i.src = preloadBuffer.shift();
 							} else {
 								i = new Image();
 								i.onload = i.onerror = loadNextImg;
-								i.src = preloadBuffer.shift();
 							}
+							i.onprogress = function (e) {
+								console.log([e.loaded, e.total]);
+							};
+							i.src = preloadBuffer.shift();
 							console.log('load: ' + i.src);
 						}
 					}
