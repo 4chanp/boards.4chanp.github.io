@@ -82,8 +82,8 @@
 	</head>
 	<body>
 
-		<a id="prevButton" title="Use arrow keys!" href="#">&lt;</a>
-		<a id="nextButton" title="Use arrow keys!" href="#">&gt;</a>
+		<a id="prevButton" title="Use left or a key!" href="#">&lt;</a>
+		<a id="nextButton" title="Use right or d key!" href="#">&gt;</a>
 		<div id="counter"></div>
 		<div id="auto">
 			<input id="autoCb" type="checkbox" title="Use SPACE key!"/>
@@ -91,6 +91,7 @@
 				<b>Auto Next</b> every:
 				<input id="autoSec" type="text" value="5" /> seconds
 			</label>
+			<button id="preLoad" title="Use UP or w key!">PreLoad ALL</button>
 			<button id="ban" title="Use DEL key!">BAN image</button>
 		</div>
 		<div id="viewer">
@@ -163,22 +164,25 @@
 
 
 					$(document).keydown(function (e) {
-						if (e.keyCode === 37) {
-							document.location.hash = $('#prevButton').attr('href');
-						}
-
-						if (e.keyCode === 39) {
-							document.location.hash = $('#nextButton').attr('href');
-						}
-
-						//space
-						if (e.keyCode === 32) {
-							$('#autoCb').click();
-						}
-
-						//del
-						if (e.keyCode === 46) {
-							banCurrentImage();
+						switch (e.keyCode) {
+							case 37: //left
+							case 65: //a
+								document.location.hash = $('#prevButton').attr('href');
+								break;
+							case 39: //right
+							case 68: //d
+								document.location.hash = $('#nextButton').attr('href');
+								break;
+							case 32: //space
+								$('#autoCb').click();
+								break;
+							case 46: //del
+								banCurrentImage();
+								break;
+							case 38: //up
+							case 87: //w
+								$('#preLoad').click();
+								break;
 						}
 					});
 
@@ -187,6 +191,12 @@
 					$('#autoSec').val(store.get('autoSecValue') || 5);
 					$('#autoSec').change(function (e) {
 						store.set('autoSecValue', $('#autoSec').val());
+					});
+
+					$('#preLoad').click(function () {
+						images.forEach(function (img) {
+							preloadImg(img.imgURL);
+						});
 					});
 
 					//tickAuto();
@@ -258,9 +268,16 @@
 								preloadRuning = false;
 								return;
 							}
-							var i = new Image();
-							i.onload = loadNextImg;
-							i.src = preloadBuffer.shift();
+							var i;
+							if (images[position].ext === '.webm') {
+								i = document.createElement('video');
+								i.canplaythrough = i.onerror = loadNextImg;
+								i.src = preloadBuffer.shift();
+							} else {
+								i = new Image();
+								i.onload = i.onerror = loadNextImg;
+								i.src = preloadBuffer.shift();
+							}
 							console.log('load: ' + i.src);
 						}
 					}
